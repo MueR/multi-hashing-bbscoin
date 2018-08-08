@@ -2,6 +2,7 @@
 #include <node_buffer.h>
 #include <v8.h>
 #include <stdint.h>
+#include <nan.h>
 
 extern "C" {
     #include "bcrypt.h"
@@ -49,7 +50,7 @@ void quark(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     quark_hash(input, output, input_len);
@@ -196,7 +197,7 @@ void skein(const FunctionCallbackInfo<Value>& args) {
     char output[32];
 
     uint32_t input_len = Buffer::Length(target);
-    
+
     skein_hash(input, output, input_len);
     args.GetReturnValue().Set(node::Buffer::Copy(Isolate::GetCurrent(), output, 32).ToLocalChecked());
 }
@@ -216,7 +217,7 @@ void groestl(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     groestl_hash(input, output, input_len);
@@ -239,7 +240,7 @@ void groestlmyriad(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     groestlmyriad_hash(input, output, input_len);
@@ -261,7 +262,7 @@ void blake(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     blake_hash(input, output, input_len);
@@ -284,7 +285,7 @@ void fugue(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     fugue_hash(input, output, input_len);
@@ -307,7 +308,7 @@ void qubit(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     qubit_hash(input, output, input_len);
@@ -330,7 +331,7 @@ void hefty1(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     hefty1_hash(input, output, input_len);
@@ -352,7 +353,7 @@ void shavite3(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     shavite3_hash(input, output, input_len);
@@ -367,12 +368,12 @@ void cryptonight(const FunctionCallbackInfo<Value>& args) {
         except("You must provide one argument.");
         return;
     }
-    
+
     if (args.Length() >= 2) {
         if (args[1]->IsBoolean()) {
             fast = args[1]->ToBoolean()->BooleanValue();
         } else if (args[1]->IsUint32()) {
-            variant = args[1]->ToUint32()->Uint32Value();
+            variant = Nan::To<Uint32>(args[1]).ToLocalChecked()->Value();
         } else {
             return except("Argument 2 should be a boolean or uint32_t");
         }
@@ -387,7 +388,7 @@ void cryptonight(const FunctionCallbackInfo<Value>& args) {
 
     char * input = Buffer::Data(target);
     char output[32];
-    
+
     uint32_t input_len = Buffer::Length(target);
 
     if (fast) {
@@ -396,7 +397,7 @@ void cryptonight(const FunctionCallbackInfo<Value>& args) {
          if (variant > 0 && input_len < 43) {
             return except("Argument must be 43 bytes for monero variant 1+");
          }
-            
+
         cryptonight_hash(input, output, input_len, variant);
     }
 
@@ -427,7 +428,7 @@ void x13(const FunctionCallbackInfo<Value>& args) {
 
 void boolberry(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = Isolate::GetCurrent();
-    
+
     if (args.Length() < 2) {
         except("You must provide two arguments.");
         return;

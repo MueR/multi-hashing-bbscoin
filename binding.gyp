@@ -52,13 +52,14 @@
             ],
             "include_dirs": [
                 "crypto",
+                "<!(node -e \"require('nan')\")"
             ],
             "cflags_cc": [
                 "-std=c++0x",
                 "-Wno-missing-field-initializers",
                 "-Wno-unused-function",
                 "-Wno-unused-const-variable",
-                "-Wno-unused-private-field",                
+                "-Wno-unused-private-field",
             ],
             "xcode_settings": {
                 "OTHER_CFLAGS": [
