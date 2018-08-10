@@ -1,6 +1,6 @@
 {
     "name": "multi-hashing-bbscoin",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "multihashing",
     "author": {
         "name": "Matthew Little",
@@ -14,7 +14,8 @@
         "url": "https://github.com/bbscoin/multi-hashing-bbscoin.git"
     },
     "dependencies": {
-        "bindings": "*"
+        "bindings": "*",
+        "nan": "^2.10.0"
     },
     "keywords": [
         "scrypt",
